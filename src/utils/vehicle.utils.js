@@ -2,12 +2,29 @@ import getLogger from "./logger.utils.js";
 
 const log = getLogger();
 
+export const dataFormatter = (data) => {
+  try {
+    if (typeof data !== "string") {
+      throw new Error("La data debe ser un string");
+    }
+    const trimmed = data.trim();
+    if (trimmed.length === 0) return "";
+    const formattedData =
+      trimmed.charAt(0).toUpperCase() + trimmed.slice(1).toLowerCase();
+    return formattedData;
+  } catch (error) {
+    log.error("Error formatting data: ", error.message);
+    // Si el formato es inválido, lanza un error
+    throw new Error("Formato de data inválido");
+  }
+};
+
 export const registrationFormatter = (registration) => {
   try {
     if (typeof registration !== "string") {
       throw new Error("La patente debe ser un string");
     }
-    const reg = registration.replace(/\s+/g, "");
+    const reg = registration.replace(/\s+/g, "").toUpperCase();
     // Formato 1: XX111XX
     const formato1 = /^([A-Z]{2})(\d{3})([A-Z]{2})$/;
     // Formato 2: XXX111
@@ -17,15 +34,15 @@ export const registrationFormatter = (registration) => {
 
     if (formato1.test(reg)) {
       const [, l1, n, l2] = reg.match(formato1);
-      return `${l1} ${n} ${l2}`.toUpperCase();
+      return `${l1.toUpperCase()} ${n} ${l2.toUpperCase()}`;
     }
     if (formato2.test(reg)) {
       const [, l, n] = reg.match(formato2);
-      return `${l} ${n}`.toUpperCase();
+      return `${l.toUpperCase()} ${n}`;
     }
     if (formato3.test(reg)) {
       const [, l, n, l2] = reg.match(formato3);
-      return `${l} ${n} ${l2}`.toUpperCase();
+      return `${l.toUpperCase()} ${n} ${l2.toUpperCase()}`;
     }
   } catch (error) {
     log.error("Error formatting registration: ", error.message);
