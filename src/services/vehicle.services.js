@@ -11,11 +11,7 @@ const getByRegistration = async (email) =>
 
 const update = async (id, data) =>
   vehicleModel
-    .findByIdAndUpdate(
-      { _id: id },
-      { $push: { documentation: data } },
-      { new: true }
-    )
+    .findByIdAndUpdate({ _id: id }, { $set: data }, { new: true })
     .exec();
 
 const eliminate = async (id) => vehicleModel.findByIdAndDelete(id);
