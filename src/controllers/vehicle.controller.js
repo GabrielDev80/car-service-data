@@ -1,7 +1,10 @@
 import userModel from "../models/user.model.js";
 import * as service from "../services/vehicle.services.js";
 import getLogger from "../utils/logger.utils.js";
-import { registrationFormatter } from "../utils/vehicle.utils.js";
+import {
+  dataFormatter,
+  registrationFormatter,
+} from "../utils/vehicle.utils.js";
 
 const log = getLogger();
 
@@ -13,6 +16,13 @@ const createVehicle = async (req, res) => {
     delete data.user_id;
   }
   console.log("DATA DEL FRONT: ", data);
+
+  ["make", "model", "year", "color"].forEach((key) => {
+    if (data[key]) data[key] = dataFormatter(data[key]);
+  });
+
+  data.vehicle_registration = registrationFormatter(data.vehicle_registration);
+
   try {
     const vehicle = await service.create(data);
     if (!vehicle) {
@@ -44,7 +54,7 @@ const createVehicle = async (req, res) => {
     });
   } catch (error) {
     log.fatal("createVehicle controller - Internal Server Error: ", error);
-    res.status(500).json({
+    return res.status(500).json({
       status: "Error",
       message: "Internal Server Error",
     });
@@ -118,7 +128,7 @@ const getVehicleByRegistration = async (req, res) => {
       "getVehicleByRegistration controller - Vehicle not found: ",
       error
     );
-    res.status(500).json({
+    return res.status(500).json({
       status: "Error",
       message: "Internal Server Error",
     });
@@ -138,7 +148,11 @@ const updateVehicleById = async (req, res) => {
     // data.thumbnailMime = req.file.mimetype;
   }
 
-  data.registration = registrationFormatter(data.registration);
+  ["make", "model", "year", "color"].forEach((key) => {
+    if (data[key]) data[key] = dataFormatter(data[key]);
+  });
+
+  data.vehicle_registration = registrationFormatter(data.vehicle_registration);
 
   try {
     const vehicle = await service.update(id, data);
@@ -182,7 +196,7 @@ const updateVehicleByRegistration = async (req, res) => {
     });
   } catch (error) {
     log.fatal("updateVehicleById controller - Internal Server Error: ", error);
-    res.status(500).json({
+    return res.status(500).json({
       status: "Error",
       message: "Internal Servefr Error",
     });
