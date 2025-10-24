@@ -23,7 +23,9 @@ const app = express();
 const port = config.server.port;
 
 /* Express */
-app.use(cors("http://localhost:5173/*"));
+app.use(
+  cors("http://localhost:5173/*", "https://autotrack-seven.vercel.app/*")
+);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(`${__dirname}/public`));
