@@ -24,7 +24,11 @@ const port = config.server.port;
 
 /* Express */
 app.use(
-  cors("http://localhost:5173/*", "https://autotrack-seven.vercel.app/*")
+  cors({
+    origin: ["http://localhost:5173/*", "https://autotrack-seven.vercel.app/*"],
+    methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
+    credentials: true,
+  })
 );
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
