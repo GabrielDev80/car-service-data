@@ -25,7 +25,7 @@ const port = config.server.port;
 /* Express */
 app.use(
   cors({
-    origin: ["http://localhost:5173/*", "https://autotrack-seven.vercel.app/*"],
+    origin: ["http://localhost:5173", "https://autotrack-seven.vercel.app"],
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
     credentials: true,
   })
