@@ -21,7 +21,22 @@ const createVehicle = async (req, res) => {
     if (data[key]) data[key] = dataFormatter(data[key]);
   });
 
-  data.vehicle_registration = registrationFormatter(data.vehicle_registration);
+  // Solo procesar la patente si el cliente envía un string no vacío.
+  // Esto evita borrar la patente existente cuando se sube sólo la imagen.
+  if (
+    typeof data.vehicle_registration === "string" &&
+    data.vehicle_registration.trim() !== ""
+  ) {
+    const formattedReg = registrationFormatter(data.vehicle_registration);
+    if (formattedReg && formattedReg.length > 0) {
+      data.vehicle_registration = formattedReg;
+    } else {
+      // Si vino una cadena pero el formato no es válido, NO sobreescribimos
+      // la propiedad para evitar borrar la existente en la BD. Si prefieres
+      // validar estrictamente, aquí se podría devolver un 400 en vez de
+      // ignorar el cambio.
+    }
+  }
 
   try {
     const vehicle = await service.create(data);
@@ -152,7 +167,27 @@ const updateVehicleById = async (req, res) => {
     if (data[key]) data[key] = dataFormatter(data[key]);
   });
 
-  data.vehicle_registration = registrationFormatter(data.vehicle_registration);
+  // Procesar vehicle_registration de forma segura:
+  // - Si no viene, no tocamos nada.
+  // - Si viene como string vacía o formato inválido, eliminamos la propiedad
+  //   del objeto `data` para evitar sobrescribir la patente existente en la BD.
+  if (data.vehicle_registration !== undefined) {
+    if (
+      typeof data.vehicle_registration === "string" &&
+      data.vehicle_registration.trim() !== ""
+    ) {
+      const formattedReg = registrationFormatter(data.vehicle_registration);
+      if (formattedReg && formattedReg.length > 0) {
+        data.vehicle_registration = formattedReg;
+      } else {
+        // Formato inválido: no sobrescribimos la patente existente
+        delete data.vehicle_registration;
+      }
+    } else {
+      // Si se envió pero está vacío o no es string, no tocamos la DB
+      delete data.vehicle_registration;
+    }
+  }
 
   try {
     const vehicle = await service.update(id, data);
