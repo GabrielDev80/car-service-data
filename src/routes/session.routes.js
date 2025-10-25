@@ -1,7 +1,11 @@
 import { Router } from "express";
 import passport from "passport";
 import { customAuthenticate } from "../middlewares/user.middlewares.js";
-import { userLogin, userRegister } from "../controllers/user.controller.js";
+import {
+  userLogin,
+  userRegister,
+  userLogout,
+} from "../controllers/user.controller.js";
 import {
   validateLoginFields,
   validateUsersFields,
@@ -36,5 +40,8 @@ sessionRouter.post("/test", upload.single("thumbnail"), (req, res) => {
   console.log("req.file:", req.file);
   res.status(200).json({ body: req.body, file: req.file });
 });
+
+// Logout de sesión (session-based)
+sessionRouter.post("/logout", userLogout);
 
 export default sessionRouter;

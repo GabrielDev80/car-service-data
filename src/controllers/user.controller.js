@@ -30,7 +30,7 @@ const userRegister = async (req, res) => {
   }
 };
 
-// Login local de usuario
+// Login local de usuario - toda la lógica está en el controlador de registro en passportStrategies
 const userLogin = async (req, res) => {
   try {
     const data = req.user;
@@ -58,6 +58,44 @@ const userLogin = async (req, res) => {
   } catch (error) {
     log.fatal("controller - userlogin: Error de Servidor", error);
     res.status(500).json({ status: "Error", message: error.message });
+  }
+};
+
+// Logout local de usuario
+const userLogout = async (req, res) => {
+  try {
+    // Passport >=0.6 requiere callback
+    req.logout(function (err) {
+      if (err) {
+        log.error("userLogout - Error during req.logout", err);
+        return res
+          .status(500)
+          .json({ status: "Error", message: "Logout failed" });
+      }
+
+      // Destruir la sesión en el store (MongoStore)
+      req.session.destroy((err) => {
+        if (err) {
+          log.error("userLogout - Error destroying session", err);
+          // Intentamos limpiar la cookie aunque haya error
+          res.clearCookie("connect.sid");
+          return res
+            .status(500)
+            .json({ status: "Error", message: "Session destroy failed" });
+        }
+
+        // Limpiar cookie de sesión en cliente
+        res.clearCookie("connect.sid");
+        return res
+          .status(200)
+          .json({ status: "Success", message: "Logged out" });
+      });
+    });
+  } catch (error) {
+    log.fatal("userLogout - Internal Server Error: ", error);
+    return res
+      .status(500)
+      .json({ status: "Error", message: "Internal Server Error" });
   }
 };
 
@@ -175,6 +213,7 @@ const deleteUser = async (req, res) => {
 export {
   userRegister,
   userLogin,
+  userLogout,
   getAllUsers,
   getCurrentUser,
   updateCurrentUser,
