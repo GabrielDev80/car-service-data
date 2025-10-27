@@ -32,7 +32,7 @@ export const devLog = winston.createLogger({
     // Probar funcionalidad
     new winston.transports.File({
       level: "error",
-      filename: "logs/errors.log",
+      filename: "logs/errors_dev.log",
       format: winston.format.combine(
         winston.format.timestamp(),
         winston.format.simple()

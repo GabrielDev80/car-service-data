@@ -4,5 +4,8 @@ node_modules/
 .env.*
 *.todo
 
-# recordatorios
+# Logs
+logs/
+
+# Recordatorios
 users.json
