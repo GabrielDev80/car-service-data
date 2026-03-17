@@ -28,7 +28,7 @@ app.use(
     origin: ["http://localhost:5173", "https://autotrack-seven.vercel.app"],
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
     credentials: true,
-  })
+  }),
 );
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -49,7 +49,7 @@ app.use(
       secure: false, // Cambiar a true en producción
       httpOnly: true,
     },
-  })
+  }),
 );
 
 /* Passport */
