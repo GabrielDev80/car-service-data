@@ -10,9 +10,10 @@ const log = getLogger();
 
 const createVehicle = async (req, res) => {
   const data = req.body;
-  // Asociar el vehículo al usuario actual
-  if (data.user_id) {
-    data.owner = data.user_id;
+  // Asociar el vehículo al usuario actual (priorizar el token)
+  const userId = req.userId || data.user_id;
+  if (userId) {
+    data.owner = userId;
     delete data.user_id;
   }
   console.log("DATA DEL FRONT: ", data);
@@ -51,7 +52,7 @@ const createVehicle = async (req, res) => {
       const userUpdated = await userModel.findByIdAndUpdate(
         data.owner,
         { $push: { vehicles: vehicle._id } },
-        { new: true }
+        { new: true },
       );
 
       if (!userUpdated) {
@@ -141,7 +142,7 @@ const getVehicleByRegistration = async (req, res) => {
   } catch (error) {
     log.fatal(
       "getVehicleByRegistration controller - Vehicle not found: ",
-      error
+      error,
     );
     return res.status(500).json({
       status: "Error",

@@ -46,7 +46,7 @@ const userLogin = async (req, res) => {
 
     // Generar el token JWT
     const token = generateToken({
-      id: currentUser.id,
+      id: currentUser.user_id,
       email: currentUser.email,
     });
     console.log("token: ", token);
@@ -121,15 +121,13 @@ const getAllUsers = async (req, res) => {
 
 // this controller should be preceded by a middleware that checks if the user is authenticated
 const getCurrentUser = async (req, res) => {
-  // console.log("controller - getCurrentUser: ", req);
-  const { id } = req.session.user || req.params;
+  // Priority: JWT auth provides req.userId
+  const id = req.userId || req.session?.user?.id || req.params.id;
 
   try {
-    if (!req.session) {
-      log.error("Session user not initialized");
-      return res
-        .status(401)
-        .json({ status: "Error", message: "Session user not initialized" });
+    if (!id) {
+      log.error("getCurrentUser - No user id was provided");
+      return res.status(401).json({ status: "Error", message: "Unauthorized" });
     }
 
     const user = await services.getById(id);
@@ -139,7 +137,6 @@ const getCurrentUser = async (req, res) => {
         .json({ status: "Error", message: "User not found" });
     }
     const currentUser = userDTO(user);
-    // console.log("currentUser: ", currentUser);
     res.status(200).json({
       status: "Success",
       message: "User retrieved successfully",
@@ -152,29 +149,27 @@ const getCurrentUser = async (req, res) => {
 };
 // this controller should be preceded by a middleware that checks if the user is authenticated
 const updateCurrentUser = async (req, res) => {
-  console.log("updateCurrentUser - req.session : ", req.session);
   const data = req.body;
-  const id = data.user_id;
+  // Preferir el id validado por el token (req.userId) y evitar que el cliente lo falsifique.
+  const id = req.userId || data.user_id;
 
   // Si hay imagen, guarda solo el string base64
   if (req.file) {
     data.thumbnail = req.file.buffer.toString("base64");
-    // Si quieres guardar el mimeType, usa otro campo, por ejemplo:
-    // data.thumbnailMime = req.file.mimetype;
   }
 
   try {
     const updatedUser = await services.update(id, data);
 
     if (!updatedUser) {
-      log.error("try - Error updating user", error?.message);
+      log.error("try - Error updating user", "User not found");
       return res
         .status(404)
         .json({ status: "Error", message: "User not found" });
     }
     const formattedUser = userDTO(updatedUser);
     res.status(200).json({
-      Status: "Success",
+      status: "Success",
       message: "User updated succesfully",
       payload: formattedUser,
     });
@@ -187,13 +182,12 @@ const updateCurrentUser = async (req, res) => {
 // this controller should be preceded by a middleware that checks if the user is authenticated
 const deleteUser = async (req, res) => {
   try {
-    const { id } = req.session.user;
-    if (!req.session.user) {
-      log.error("Session user not initialized");
-      return res
-        .status(401)
-        .json({ status: "Error", message: "Session user not initialized" });
+    const id = req.userId || req.session?.user?.id;
+    if (!id) {
+      log.error("deleteUser - No user id was provided");
+      return res.status(401).json({ status: "Error", message: "Unauthorized" });
     }
+
     const user = await services.eliminate(id);
     if (!user) {
       return res
