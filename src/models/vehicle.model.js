@@ -22,7 +22,8 @@ const serviceSchema = new mongoose.Schema(
     },
     service_cost: {
       type: Number,
-      required: true,
+      required: false,
+      default: 0,
     },
     service_location: {
       type: String,
@@ -39,7 +40,7 @@ const serviceSchema = new mongoose.Schema(
   },
   {
     timestamps: true,
-  }
+  },
 );
 
 const documentationSchema = new mongoose.Schema(
@@ -68,7 +69,7 @@ const documentationSchema = new mongoose.Schema(
   },
   {
     timestamps: true,
-  }
+  },
 );
 
 const vehicleSchema = new mongoose.Schema(
@@ -107,7 +108,7 @@ const vehicleSchema = new mongoose.Schema(
   },
   {
     timestamps: true,
-  }
+  },
 );
 
 const vehicleModel = mongoose.model(vehicleCollection, vehicleSchema);

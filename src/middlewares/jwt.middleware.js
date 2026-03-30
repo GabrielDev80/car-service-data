@@ -19,9 +19,7 @@ export const jwtAuth = (req, res, next) => {
     req.userId = payload.id;
     next();
   } catch (error) {
-    log.error("jwtAuth - invalid token", error.message);
-    return res
-      .status(401)
-      .json({ status: "Error", message: "Invalid or expired token" });
+    log.error("jwtAuth - invalid token: ", error);
+    return res.status(401).json({ status: "Error", message: error.message });
   }
 };

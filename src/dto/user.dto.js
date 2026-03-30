@@ -9,6 +9,16 @@ export const userDTO = (data) => {
     role: data.role,
     thumbnail: data.thumbnail || null,
     vehicles: data.vehicles || null,
+    license: {
+      licenseClass: data.license?.licenseClass || null,
+      expireDate: data.license?.expireDate || null,
+    },
+    linti: {
+      psichoPhysicalTest: data.linti?.psichoPhysicalTest || null,
+      expPsichoPhysicalTest: data.linti?.expPsichoPhysicalTest || null,
+      course: data.linti?.course || null,
+      expCourse: data.linti?.expCourse || null,
+    },
     created_at: data.createdAt,
     updated_at: data.updatedAt,
   };

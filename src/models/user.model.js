@@ -2,6 +2,31 @@ import mongoose from "mongoose";
 
 const userCollection = "users";
 
+const licenseSchema = new mongoose.Schema({
+  licenseClass: {
+    type: String,
+    required: true,
+  },
+  expireDate: {
+    type: Date,
+    required: true,
+  },
+});
+const lintiSchema = new mongoose.Schema({
+  psichoPhysicalTest: {
+    type: Date,
+  },
+  expPsichoPhysicalTest: {
+    type: Date,
+  },
+  course: {
+    type: Date,
+  },
+  expCourse: {
+    type: Date,
+  },
+});
+
 const userSchema = new mongoose.Schema(
   {
     first_name: {
@@ -42,6 +67,8 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: false,
     },
+    license: licenseSchema,
+    linti: lintiSchema,
     vehicles: [
       {
         type: mongoose.Schema.Types.ObjectId,
@@ -51,7 +78,7 @@ const userSchema = new mongoose.Schema(
   },
   {
     timestamps: true,
-  }
+  },
 );
 
 const userModel = mongoose.model(userCollection, userSchema);
