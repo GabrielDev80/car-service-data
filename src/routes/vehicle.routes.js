@@ -9,19 +9,30 @@ import {
   deleteVehicle,
 } from "../controllers/vehicle.controller.js";
 import upload from "../utils/upload.utils.js";
+import { jwtAuth } from "../middlewares/jwt.middleware.js";
 
 const vehicleRouter = Router();
 
-vehicleRouter.post("/", createVehicle);
-vehicleRouter.get("/", getAllVehicles);
-vehicleRouter.get("/:id", getVehicleById);
-vehicleRouter.get("/registration/:registration", getVehicleByRegistration);
-vehicleRouter.patch("/:id", upload.array("thumbnails", 5), updateVehicleById);
+vehicleRouter.post("/", jwtAuth, createVehicle);
+vehicleRouter.get("/", jwtAuth, getAllVehicles);
+vehicleRouter.get("/:id", jwtAuth, getVehicleById);
+vehicleRouter.get(
+  "/registration/:registration",
+  jwtAuth,
+  getVehicleByRegistration,
+);
+vehicleRouter.patch(
+  "/:id",
+  jwtAuth,
+  upload.array("thumbnails", 5),
+  updateVehicleById,
+);
 vehicleRouter.patch(
   "/registration/:registration",
+  jwtAuth,
   upload.array("thumbnails", 5),
-  updateVehicleByRegistration
+  updateVehicleByRegistration,
 );
-vehicleRouter.delete("/:id", deleteVehicle); // WARN: This controller should be preceded by a middleware that checks if the user is authenticated.
+vehicleRouter.delete("/:id", jwtAuth, deleteVehicle); // WARN: This controller should be preceded by a middleware that checks if the user is authenticated.
 
 export default vehicleRouter;

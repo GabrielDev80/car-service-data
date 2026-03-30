@@ -7,6 +7,7 @@ import {
   userLogout,
 } from "../controllers/user.controller.js";
 import { validateAsAdmin } from "../middlewares/user.middlewares.js";
+import upload from "../utils/upload.utils.js";
 
 const userRouter = Router();
 
@@ -16,7 +17,7 @@ userRouter.post("/logout", userLogout); // WARN: This controller should be prece
 
 userRouter.get("/:id", getCurrentUser); // WARN: This controller should be preceded by a middleware that checks if the user is authenticated.
 
-userRouter.patch("/:id", updateCurrentUser); // WARN: This controller should be preceded by a middleware that checks if the user is authenticated.
+userRouter.patch("/:id", upload.single("thumbnail"), updateCurrentUser); // WARN: This controller should be preceded by a middleware that checks if the user is authenticated.
 
 userRouter.delete("/:id", validateAsAdmin, deleteUser); // WARN: This controller should be preceded by a middleware that checks if the user is authenticated.
 
