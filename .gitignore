@@ -1,6 +1,7 @@
 .vscode/
 node_modules/
 
+.env
 .env.*
 *.todo
 
@@ -9,3 +10,8 @@ logs/
 
 # Recordatorios
 users.json
+/src/generated/prisma
+requerimientos
+
+# Prisma
+prisma/schemas

@@ -9,8 +9,8 @@ dotenv.config({
     environment === "development"
       ? ".env.development"
       : environment === "testing"
-      ? ".env.testing"
-      : ".env.production",
+        ? ".env.testing"
+        : ".env.production",
 });
 
 config.environment = {
@@ -26,11 +26,21 @@ config.server = {
 };
 
 config.db = {
-  cs: process.env.MONGO_URI,
+  cs: process.env.MONGO_URI, // connection string for MongoDB
   dbUser: process.env.MONGO_USER,
   dbPass: process.env.MONGO_PASS,
   dbName: process.env.MONGO_NAME,
   testing: process.env.MONGO_TEST,
+};
+
+config.postgresql = {
+  cs: process.env.DATABASE_URL, // connection string for PostgreSQL
+  host: process.env.PG_HOST,
+  port: process.env.PG_PORT,
+  user: process.env.PG_USER,
+  password: process.env.PG_PASSWORD,
+  database: process.env.PG_DATABASE,
+  testDatabase: process.env.PG_TEST_DATABASE,
 };
 
 config.session = {
