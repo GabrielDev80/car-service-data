@@ -1,6 +1,6 @@
-import { validateFormatData } from "../helpers/commonValidations.helpers.js";
-import { validateUsersFields } from "../validations/user.validations.js";
-import getLogger from "../utils/logger.utils.js";
+import { validateFormatData } from "../../shared/validations/commonValidations.js";
+import { validateUsersFields } from "./user.validations.js";
+import getLogger from "../../utils/logger.utils.js";
 import passport from "passport";
 
 const log = getLogger();

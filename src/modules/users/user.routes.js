@@ -5,9 +5,9 @@ import {
   getCurrentUser,
   updateCurrentUser,
   userLogout,
-} from "../controllers/user.controller.js";
-import { validateAsAdmin } from "../middlewares/user.middlewares.js";
-import upload from "../utils/upload.utils.js";
+} from "./user.controller.js";
+import { validateAsAdmin } from "./user.middlewares.js";
+import upload from "../../utils/upload.utils.js";
 
 const userRouter = Router();
 

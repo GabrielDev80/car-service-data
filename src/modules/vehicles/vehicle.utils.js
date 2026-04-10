@@ -1,4 +1,4 @@
-import getLogger from "./logger.utils.js";
+import getLogger from "../../utils/logger.utils.js";
 
 const log = getLogger();
 
@@ -66,7 +66,7 @@ export const registrationFormatter = (registration) => {
     log.error("Error formatting registration: ", error.message);
     // Si el formato es inválido, lanza un error
     throw new Error(
-      "Formato de patente inválido. Debe ser 'XX111XX', 'XXX111' o 'X111XXX'"
+      "Formato de patente inválido. Debe ser 'XX111XX', 'XXX111' o 'X111XXX'",
     );
   }
 };

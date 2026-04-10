@@ -1,6 +1,6 @@
-import { create } from "../services/user.services.js";
-import { createHash } from "./bcrypt.utils.js";
-import getLogger from "./logger.utils.js";
+import { create } from "./user.services.js";
+import { createHash } from "../../utils/bcrypt.utils.js";
+import getLogger from "../../utils/logger.utils.js";
 
 const log = getLogger();
 

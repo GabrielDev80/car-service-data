@@ -1,7 +1,7 @@
-import getLogger from "../utils/logger.utils.js";
-import * as services from "../services/user.services.js";
-import { userDTO } from "../dto/user.dto.js";
-import { generateToken } from "../utils/jwt.utils.js";
+import getLogger from "../../utils/logger.utils.js";
+import * as services from "./user.services.js";
+import { userDTO } from "./user.dto.js";
+import { generateToken } from "../../utils/jwt.utils.js";
 
 const log = getLogger();
 

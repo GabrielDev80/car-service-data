@@ -5,7 +5,7 @@ import __dirname from "./dirname.js";
 import cors from "cors";
 
 import passport from "passport";
-import initializePassport from "./controllers/passportStrategies.controller.js";
+import initializePassport from "./modules/auth/passport/passportStrategies.controller.js";
 import session from "express-session";
 import MongoStore from "connect-mongo";
 

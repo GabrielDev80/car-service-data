@@ -1,9 +1,9 @@
 import passport from "passport";
 import { Strategy as LocalStrategy } from "passport-local";
-import { isValidPassword } from "../utils/bcrypt.utils.js";
-import * as services from "../services/user.services.js";
-import getLogger from "../utils/logger.utils.js";
-import { createUser } from "../utils/user.utils.js";
+import { isValidPassword } from "../../../utils/bcrypt.utils.js";
+import * as services from "../../users/user.services.js";
+import getLogger from "../../../utils/logger.utils.js";
+import { createUser } from "../../users/user.utils.js";
 
 const log = getLogger();
 
@@ -51,13 +51,13 @@ const initializePassport = () => {
         } catch (error) {
           log.fatal(
             "passportStrategies (local-register) - Error al obtener el usuario: " +
-              error.message
+              error.message,
           );
           console.error(error);
           return done("error: " + error);
         }
-      }
-    )
+      },
+    ),
   );
 
   // Estrategia de login local
@@ -92,8 +92,8 @@ const initializePassport = () => {
           log.fatal("Error getting user: " + error);
           return done(error);
         }
-      }
-    )
+      },
+    ),
   );
 
   // Serialización

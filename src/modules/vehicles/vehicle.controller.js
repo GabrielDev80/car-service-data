@@ -1,10 +1,7 @@
-import userModel from "../models/user.model.js";
-import * as service from "../services/vehicle.services.js";
-import getLogger from "../utils/logger.utils.js";
-import {
-  dataFormatter,
-  registrationFormatter,
-} from "../utils/vehicle.utils.js";
+import userModel from "../users/user.model.js";
+import * as service from "../vehicles/vehicle.services.js";
+import getLogger from "../../utils/logger.utils.js";
+import { dataFormatter, registrationFormatter } from "./vehicle.utils.js";
 
 const log = getLogger();
 

@@ -7,9 +7,9 @@ import {
   updateVehicleById,
   updateVehicleByRegistration,
   deleteVehicle,
-} from "../controllers/vehicle.controller.js";
-import upload from "../utils/upload.utils.js";
-import { jwtAuth } from "../middlewares/jwt.middleware.js";
+} from "../vehicles/vehicle.controller.js";
+import upload from "../../utils/upload.utils.js";
+import { jwtAuth } from "../../middlewares/jwt.middleware.js";
 
 const vehicleRouter = Router();
 

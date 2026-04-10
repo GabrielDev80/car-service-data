@@ -1,5 +1,5 @@
 import { check, validationResult } from "express-validator";
-import getLogger from "../utils/logger.utils.js";
+import getLogger from "../../utils/logger.utils.js";
 
 const log = getLogger();
 

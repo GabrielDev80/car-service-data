@@ -1,4 +1,4 @@
-import getLogger from "../utils/logger.utils";
+import getLogger from "../../utils/logger.utils";
 
 const log = getLogger();
 

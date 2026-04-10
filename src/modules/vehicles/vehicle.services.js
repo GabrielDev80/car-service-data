@@ -1,4 +1,4 @@
-import vehicleModel from "../models/vehicle.model.js";
+import vehicleModel from "./vehicle.model.js";
 
 const create = async (data) => vehicleModel.create(data);
 
