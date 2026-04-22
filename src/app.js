@@ -12,7 +12,7 @@ import MongoStore from "connect-mongo";
 import indexRouter from "./routes/index.routes.js";
 
 import morgan from "morgan";
-import db from "./config/dbConnection.js";
+import db from "./config/mongoConnection.js";
 import getLogger from "./utils/logger.utils.js";
 
 /* Logger */
