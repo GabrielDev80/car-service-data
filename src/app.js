@@ -15,12 +15,13 @@ import morgan from "morgan";
 import db from "./config/mongoConnection.js";
 import getLogger from "./utils/logger.utils.js";
 
+/**************APP CONFIGURATIONS**************/
+
 /* Logger */
 const log = getLogger();
 
-/* CONFIGURATIONS */
+/* Express */
 const app = express();
-const port = config.server.port;
 
 /* Express */
 app.use(
@@ -62,15 +63,5 @@ app.use(morgan("dev"));
 
 /* Routes */
 app.use(indexRouter);
-
-/* Server */
-const server = app.listen(port, (err) => {
-  db;
-  if (err) {
-    log.error("*** CONNECTION ERROR ***: ", err.message);
-    return;
-  }
-  log.info(`Running on port ${port}, in ${config.environment.env} mode`);
-});
 
 export default app;
