@@ -1,5 +1,5 @@
 import getLogger from "../../utils/logger.utils.js";
-import * as services from "./user.services.js";
+import services from "./services/index.js";
 import { userDTO } from "./user.dto.js";
 import { generateToken } from "../../utils/jwt.utils.js";
 

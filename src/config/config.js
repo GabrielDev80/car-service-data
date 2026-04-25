@@ -25,6 +25,10 @@ config.server = {
   port: process.env.PORT,
 };
 
+config.dbClient = {
+  client: process.env.DB_CLIENT,
+};
+
 config.db = {
   cs: process.env.MONGO_URI, // connection string for MongoDB
   dbUser: process.env.MONGO_USER,
