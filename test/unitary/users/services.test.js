@@ -1,5 +1,5 @@
 import config from "../../../src/config/config.js";
-import * as services from "../../../src/services/user.services.js";
+import services from "../../../src/modules/users/services/index.js";
 import { expect } from "chai";
 import { before, beforeEach, describe } from "mocha";
 import * as mocks from "../../mocks/user.mock.js";
@@ -200,7 +200,7 @@ describe("user services testing", function () {
 
       const response = await services.update(
         nonExistentId,
-        mocks.commonUserUpdated
+        mocks.commonUserUpdated,
       );
 
       expect(response).to.be.null;
@@ -242,7 +242,7 @@ describe("user services testing", function () {
 
       const response = await services.update(
         _id,
-        mocks.commonUserUpdatedNickname
+        mocks.commonUserUpdatedNickname,
       );
       expect(response).to.be.ok;
       expect(response).to.be.an("object");

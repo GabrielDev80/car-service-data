@@ -1,7 +1,7 @@
 import passport from "passport";
 import { Strategy as LocalStrategy } from "passport-local";
 import { isValidPassword } from "../../../utils/bcrypt.utils.js";
-import * as services from "../../users/user.services.js";
+import services from "../../users/services/index.js";
 import getLogger from "../../../utils/logger.utils.js";
 import { createUser } from "../../users/user.utils.js";
 
