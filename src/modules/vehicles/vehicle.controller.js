@@ -1,5 +1,5 @@
 import userModel from "../users/user.model.js";
-import * as service from "../vehicles/vehicle.services.js";
+import repository from "./repositories/index.js";
 import getLogger from "../../utils/logger.utils.js";
 import { dataFormatter, registrationFormatter } from "./vehicle.utils.js";
 
@@ -37,7 +37,7 @@ const createVehicle = async (req, res) => {
   }
 
   try {
-    const vehicle = await service.create(data);
+    const vehicle = await repository.create(data);
     if (!vehicle) {
       log.error("Error creating vehicle", { data });
       return res
@@ -76,7 +76,7 @@ const createVehicle = async (req, res) => {
 
 const getAllVehicles = async (req, res) => {
   try {
-    const vehicles = await service.getAll();
+    const vehicles = await repository.getAll();
     if (!vehicles) {
       log.error("getAllVehicles controller - No vehicles found");
       return res.ststus(404).json({ status: "Error", message: "Not Found" });
@@ -97,7 +97,7 @@ const getVehicleById = async (req, res) => {
   const { id } = req.params;
   // console.log("getVehicleById - id: ", req.params);
   try {
-    const vehicle = await service.getById(id);
+    const vehicle = await repository.getById(id);
     if (!vehicle) {
       log.error("getVehicleById controller - Vehicle not found: ", { id });
       return res
@@ -123,7 +123,7 @@ const getVehicleByRegistration = async (req, res) => {
   const registration = req.body;
   const formattedRegistration = registrationFormatter(registration);
   try {
-    const vehicle = await service.getByRegistration(formattedRegistration);
+    const vehicle = await repository.getByRegistration(formattedRegistration);
     if (!vehicle) {
       log.error("getVehicleByRegistration controller - Vehicle not found: ", {
         formattedRegistration,
@@ -188,7 +188,7 @@ const updateVehicleById = async (req, res) => {
   }
 
   try {
-    const vehicle = await service.update(id, data);
+    const vehicle = await repository.update(id, data);
     if (!vehicle) {
       log.error("updateVehicleById controller - Vehicle not found: ", { id });
       return res
@@ -213,7 +213,7 @@ const updateVehicleByRegistration = async (req, res) => {
   const registration = req.params;
   const data = req.body;
   try {
-    const vehicle = await service.update(registration, data);
+    const vehicle = await repository.update(registration, data);
     if (!vehicle) {
       log.error("updateVehicleById controller - Vehicle not found: ", {
         registration,
@@ -239,7 +239,7 @@ const updateVehicleByRegistration = async (req, res) => {
 const deleteVehicle = async (req, res) => {
   const id = req.params;
   try {
-    const deletedVehicle = await service.eliminate(id);
+    const deletedVehicle = await repository.eliminate(id);
     if (!deletedVehicle) {
       log.error("deleteVehicle controller - Vehicle not found: ", { id });
       return res.status(404).json({ status: "Error", message: "Not found" });

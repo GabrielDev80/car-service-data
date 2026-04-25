@@ -1,7 +1,7 @@
 import passport from "passport";
 import { Strategy as LocalStrategy } from "passport-local";
 import { isValidPassword } from "../../../utils/bcrypt.utils.js";
-import services from "../../users/services/index.js";
+import repository from "../../users/repositories/index.js";
 import getLogger from "../../../utils/logger.utils.js";
 import { createUser } from "../../users/user.utils.js";
 
@@ -24,7 +24,7 @@ const initializePassport = () => {
 
         try {
           // Verificar si el email ya existe
-          const userExist = await services.getByEmail(username);
+          const userExist = await repository.getByEmail(username);
           if (userExist) {
             if (userExist.email === username) {
               // log.error(
@@ -70,7 +70,7 @@ const initializePassport = () => {
       },
       async (req, email, password, done) => {
         try {
-          const user = await services.getByEmail(email);
+          const user = await repository.getByEmail(email);
           if (!user) {
             log.error("Incorrect credentials");
             return done(null, false, {
@@ -102,7 +102,7 @@ const initializePassport = () => {
   // Deserialización
   passport.deserializeUser(async (id, done) => {
     try {
-      const user = await services.getById(id);
+      const user = await repository.getById(id);
       done(null, user);
     } catch (error) {
       done(error);

@@ -1,4 +1,4 @@
-import services from "./services/index.js";
+import repository from "./repositories/index.js";
 import { createHash } from "../../utils/bcrypt.utils.js";
 import getLogger from "../../utils/logger.utils.js";
 
@@ -26,7 +26,7 @@ export const createUser = async ({
       role,
     };
 
-    const result = await services.create(newUser);
+    const result = await repository.create(newUser);
 
     return result;
   } catch (error) {

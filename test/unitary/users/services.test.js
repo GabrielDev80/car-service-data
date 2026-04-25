@@ -1,5 +1,5 @@
 import config from "../../../src/config/config.js";
-import services from "../../../src/modules/users/services/index.js";
+import repository from "../../../src/modules/users/repositories/index.js";
 import { expect } from "chai";
 import { before, beforeEach, describe } from "mocha";
 import * as mocks from "../../mocks/user.mock.js";
@@ -7,7 +7,7 @@ import mongoose from "mongoose";
 
 const dbURI = config.db.cs;
 
-describe("user services testing", function () {
+describe("user repository testing", function () {
   this.timeout(6000);
 
   before(async () => {
@@ -25,7 +25,7 @@ describe("user services testing", function () {
 
   describe("create function", () => {
     it("It should create a user correctly", async () => {
-      const response = await services.create(mocks.commonUser);
+      const response = await repository.create(mocks.commonUser);
 
       expect(response).to.be.ok;
       expect(response).to.be.an("object");
@@ -34,10 +34,10 @@ describe("user services testing", function () {
     });
 
     it("It should handle a duplicate data", async () => {
-      const response = await services.create(mocks.commonUser);
+      const response = await repository.create(mocks.commonUser);
 
       try {
-        await services.create(mocks.commonUser);
+        await repository.create(mocks.commonUser);
       } catch (error) {
         expect(error.message).to.include("duplicate key error");
       }
@@ -45,7 +45,7 @@ describe("user services testing", function () {
 
     it("It should handle a invalid format data", async () => {
       try {
-        const response = await services.create(mocks.invalidFormat_1);
+        const response = await repository.create(mocks.invalidFormat_1);
       } catch (error) {
         expect(error).to.exist;
       }
@@ -53,7 +53,7 @@ describe("user services testing", function () {
 
     it("It should handle a invalid format data", async () => {
       try {
-        await services.create(mocks.invalidFormat_2);
+        await repository.create(mocks.invalidFormat_2);
       } catch (error) {
         expect(error).to.exist;
       }
@@ -61,7 +61,7 @@ describe("user services testing", function () {
 
     it("It should handle a invalid user data", async () => {
       try {
-        await services.create(mocks.invalidUser);
+        await repository.create(mocks.invalidUser);
       } catch (error) {
         expect(error).to.exist;
       }
@@ -69,14 +69,14 @@ describe("user services testing", function () {
 
     it("It should handle a incomplete user data", async () => {
       try {
-        await services.create(mocks.incompleteUser);
+        await repository.create(mocks.incompleteUser);
       } catch (error) {
         expect(error).to.exist;
       }
     });
 
     it("It should handle asynchronous operations correctly", async () => {
-      const responsePromise = services.create(mocks.commonUser);
+      const responsePromise = repository.create(mocks.commonUser);
       expect(responsePromise).to.be.a("Promise");
 
       const response = await responsePromise;
@@ -86,7 +86,7 @@ describe("user services testing", function () {
 
   describe("getAll function", () => {
     it("It should return an empty array if there are not users", async () => {
-      const response = await services.getAll();
+      const response = await repository.getAll();
 
       expect(response).to.be.ok;
       expect(response).to.be.an("array");
@@ -94,8 +94,8 @@ describe("user services testing", function () {
     });
 
     it("It should return all users", async () => {
-      await services.create(mocks.commonUser);
-      const response = await services.getAll();
+      await repository.create(mocks.commonUser);
+      const response = await repository.getAll();
 
       expect(response).to.be.ok;
       expect(response).to.be.an("array");
@@ -110,10 +110,10 @@ describe("user services testing", function () {
 
   describe("getById function", () => {
     it("It should return an object with an user from its id", async () => {
-      const userCreated = await services.create(mocks.commonUser);
+      const userCreated = await repository.create(mocks.commonUser);
       const _id = userCreated._id;
 
-      const response = await services.getById(_id);
+      const response = await repository.getById(_id);
       expect(response).to.be.ok;
       expect(response).to.be.an("object");
       expect(response.nickname).to.be.equal(mocks.commonUser.nickname);
@@ -122,7 +122,7 @@ describe("user services testing", function () {
     it("It should return null if id is not found", async () => {
       const nonExistentId = "67edb18cd5c046e90a38acf2";
 
-      const response = await services.getById(nonExistentId);
+      const response = await repository.getById(nonExistentId);
       expect(response).to.be.null;
     });
 
@@ -130,7 +130,7 @@ describe("user services testing", function () {
       const invalidId = "invalidId";
 
       try {
-        await services.getById(invalidId);
+        await repository.getById(invalidId);
       } catch (error) {
         expect(error).to.exist;
       }
@@ -138,10 +138,10 @@ describe("user services testing", function () {
   });
   describe("getByEmail function", () => {
     it("It should return an object with an user from its email", async () => {
-      const userCreated = await services.create(mocks.commonUser);
+      const userCreated = await repository.create(mocks.commonUser);
       const email = userCreated.email;
 
-      const response = await services.getByEmail(email);
+      const response = await repository.getByEmail(email);
       expect(response).to.be.ok;
       expect(response).to.be.an("object");
       expect(response.nickname).to.be.equal(mocks.commonUser.nickname);
@@ -150,7 +150,7 @@ describe("user services testing", function () {
     it("It should return null if email is not found", async () => {
       const nonExistentEmail = "nonExistent@email.com";
 
-      const response = await services.getByEmail(nonExistentEmail);
+      const response = await repository.getByEmail(nonExistentEmail);
       expect(response).to.be.null;
     });
 
@@ -158,7 +158,7 @@ describe("user services testing", function () {
       const invalidEmail = "invalidEmail";
 
       try {
-        await services.getByEmail(invalidEmail);
+        await repository.getByEmail(invalidEmail);
       } catch (error) {
         expect(error).to.exist;
       }
@@ -167,10 +167,10 @@ describe("user services testing", function () {
 
   describe("getByUsername function", () => {
     it("It should return an object with an user from its username", async () => {
-      const userCreated = await services.create(mocks.commonUser);
+      const userCreated = await repository.create(mocks.commonUser);
       const username = userCreated.username;
 
-      const response = await services.getByUsername(username);
+      const response = await repository.getByUsername(username);
       expect(response).to.be.ok;
       expect(response).to.be.an("object");
       expect(response.nickname).to.be.equal(mocks.commonUser.nickname);
@@ -179,7 +179,7 @@ describe("user services testing", function () {
     it("It should return null if username is not found", async () => {
       const nonExistentUsername = "nonExistentUsername";
 
-      const response = await services.getByUsername(nonExistentUsername);
+      const response = await repository.getByUsername(nonExistentUsername);
       expect(response).to.be.null;
     });
 
@@ -187,7 +187,7 @@ describe("user services testing", function () {
       const invalidUsername = "invalidUsername";
 
       try {
-        await services.getByUsername(invalidUsername);
+        await repository.getByUsername(invalidUsername);
       } catch (error) {
         expect(error).to.exist;
       }
@@ -198,7 +198,7 @@ describe("user services testing", function () {
     it("It should return null if id is not found", async () => {
       const nonExistentId = "67edb18cd5c046e90a38acf2";
 
-      const response = await services.update(
+      const response = await repository.update(
         nonExistentId,
         mocks.commonUserUpdated,
       );
@@ -210,37 +210,40 @@ describe("user services testing", function () {
       const invalidId = "invalidId";
 
       try {
-        await services.update(invalidId, mocks.commonUserUpdated);
+        await repository.update(invalidId, mocks.commonUserUpdated);
       } catch (error) {
         expect(error).to.exist;
       }
     });
 
     it("It should return an object with an user updated from its id", async () => {
-      const userCreated = await services.create(mocks.commonUser);
+      const userCreated = await repository.create(mocks.commonUser);
       const _id = userCreated._id;
 
-      const response = await services.update(_id, mocks.commonUserUpdated);
+      const response = await repository.update(_id, mocks.commonUserUpdated);
       expect(response).to.be.ok;
       expect(response).to.be.an("object");
       expect(response).to.be.not.equal(mocks.commonUser);
     });
 
     it("It should return an object without update the email", async () => {
-      const userCreated = await services.create(mocks.commonUser);
+      const userCreated = await repository.create(mocks.commonUser);
       const _id = userCreated._id;
 
-      const response = await services.update(_id, mocks.commonUserUpdatedEmail);
+      const response = await repository.update(
+        _id,
+        mocks.commonUserUpdatedEmail,
+      );
       expect(response).to.be.ok;
       expect(response).to.be.an("object");
       expect(response.email).to.be.equal(mocks.commonUser.email);
     });
 
     it("It should return an object without update the username", async () => {
-      const userCreated = await services.create(mocks.commonUser);
+      const userCreated = await repository.create(mocks.commonUser);
       const _id = userCreated._id;
 
-      const response = await services.update(
+      const response = await repository.update(
         _id,
         mocks.commonUserUpdatedNickname,
       );
@@ -254,7 +257,7 @@ describe("user services testing", function () {
     it("It should return null if id is not found", async () => {
       const nonExistentId = "67edb18cd5c046e90a38acf2";
 
-      const response = await services.eliminate(nonExistentId);
+      const response = await repository.eliminate(nonExistentId);
 
       expect(response).to.be.null;
     });
@@ -263,17 +266,17 @@ describe("user services testing", function () {
       const invalidId = "invalidId";
 
       try {
-        await services.eliminate(invalidId);
+        await repository.eliminate(invalidId);
       } catch (error) {
         expect(error).to.exist;
       }
     });
 
     it("It should return an object with an user deleted from its id", async () => {
-      const userCreated = await services.create(mocks.commonUser);
+      const userCreated = await repository.create(mocks.commonUser);
       const _id = userCreated._id;
 
-      const response = await services.eliminate(_id);
+      const response = await repository.eliminate(_id);
       expect(response).to.be.ok;
       expect(response).to.be.an("object");
     });

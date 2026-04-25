@@ -1,5 +1,5 @@
 import getLogger from "../../utils/logger.utils.js";
-import services from "./services/index.js";
+import repository from "./repositories/index.js";
 import { userDTO } from "./user.dto.js";
 import { generateToken } from "../../utils/jwt.utils.js";
 
@@ -102,7 +102,7 @@ const userLogout = async (req, res) => {
 // Only the development team can use this controller
 const getAllUsers = async (req, res) => {
   try {
-    const users = await services.getAll();
+    const users = await repository.getAll();
     if (!users) {
       return res
         .status(404)
@@ -130,7 +130,7 @@ const getCurrentUser = async (req, res) => {
       return res.status(401).json({ status: "Error", message: "Unauthorized" });
     }
 
-    const user = await services.getById(id);
+    const user = await repository.getById(id);
     if (!user) {
       return res
         .status(404)
@@ -159,7 +159,7 @@ const updateCurrentUser = async (req, res) => {
   }
 
   try {
-    const updatedUser = await services.update(id, data);
+    const updatedUser = await repository.update(id, data);
 
     if (!updatedUser) {
       log.error("try - Error updating user", "User not found");
@@ -188,7 +188,7 @@ const deleteUser = async (req, res) => {
       return res.status(401).json({ status: "Error", message: "Unauthorized" });
     }
 
-    const user = await services.eliminate(id);
+    const user = await repository.eliminate(id);
     if (!user) {
       return res
         .status(404)
