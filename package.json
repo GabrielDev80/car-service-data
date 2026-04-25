@@ -20,7 +20,6 @@
   "license": "ISC",
   "description": "Esta es una API para llevar el control de mantenimientos y vencimientos de documentación de vehículos",
   "dependencies": {
-    "@prisma/client": "^7.6.0",
     "bcrypt": "^5.1.1",
     "connect-mongo": "^5.1.0",
     "cors": "^2.8.5",
@@ -33,11 +32,10 @@
     "multer": "^1.4.5-lts.2",
     "passport": "^0.7.0",
     "passport-local": "^1.0.0",
-    "pg": "^8.20.0",
-    "prisma": "^7.6.0",
     "winston": "^3.17.0"
   },
   "devDependencies": {
+    "@types/node": "^25.6.0",
     "chai": "^5.2.0",
     "mocha": "^11.1.0",
     "morgan": "^1.10.0",
