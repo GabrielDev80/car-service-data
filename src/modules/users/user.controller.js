@@ -147,6 +147,7 @@ const getCurrentUser = async (req, res) => {
     res.status(500).json({ status: "Error", message: "Internal Server Error" });
   }
 };
+
 // this controller should be preceded by a middleware that checks if the user is authenticated
 const updateCurrentUser = async (req, res) => {
   const data = req.body;
@@ -156,6 +157,12 @@ const updateCurrentUser = async (req, res) => {
   // Si hay imagen, guarda solo el string base64
   if (req.file) {
     data.thumbnail = req.file.buffer.toString("base64");
+  }
+
+  // Si el nickname llega como username
+  if (data.username) {
+    data.nickname = data.username;
+    delete data.username;
   }
 
   try {
